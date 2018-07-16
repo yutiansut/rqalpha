@@ -113,6 +113,15 @@ class AbstractAccount(with_metaclass(abc.ABCMeta)):
         raise NotImplementedError
 
     @abc.abstractproperty
+    def total_value(self):
+        """
+        [Required]
+
+        返回当前账户的总权益
+        """
+        raise NotImplementedError
+
+    @abc.abstractproperty
     def transaction_cost(self):
         """
         [Required]
@@ -388,6 +397,23 @@ class AbstractDataSource(object):
         """
         raise NotImplementedError
 
+    def history_ticks(self, instrument, count, dt):
+        """
+        获取历史tick数据
+
+        :param instrument: 合约对象
+        :type instrument: :class:`~Instrument`
+
+        :param int count: 获取的历史数据数量
+        :param str fields: 返回数据字段
+
+        :param datetime.datetime dt: 时间
+
+        :return: list of `Tick`
+
+        """
+        raise NotImplementedError
+
     def current_snapshot(self, instrument, frequency, dt):
         """
         获得当前市场快照数据。只能在日内交易阶段调用，获取当日调用时点的市场快照数据。
@@ -441,6 +467,14 @@ class AbstractDataSource(object):
     def get_commission_info(self, instrument):
         """
         获取合约的手续费信息
+        :param instrument:
+        :return:
+        """
+        raise NotImplementedError
+
+    def get_tick_size(self, instrument):
+        """
+        获取合约的 tick size
         :param instrument:
         :return:
         """
